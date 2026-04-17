@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 3000
 // MiddleWare
@@ -46,6 +46,14 @@ async function run() {
             console.log(result);
             res.send(result)
 
+        })
+        // Delete Method;
+        app.delete('/users/:id',async(req,res)=>{
+            const id = req.params.id;
+            console.log('afer delete btn click',id);
+            const query = {_id:new ObjectId(id)}
+            const result = await usersColl.deleteOne(query)
+            res.send(result)
         })
 
 
