@@ -14,14 +14,9 @@ app.get('/', (req, res) => {
 })
 // users Api
 app.get('/users', (req, res) => {
-    res.send('first-crud-operation-server here')
+    res.send('first-crud-operation-Usrs here')
 })
-// post
-app.post('/users', (req, res) => {
-    const newData = req.body;
-    console.log(newData);
-    res.send(newData)
-})
+
 // create mongodb client
 const client = new MongoClient(uri, {
     serverApi: {
@@ -34,6 +29,22 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         await client.connect();
+        // usersdb + usersColl code here;
+        const usersDB = client.db('crudUsers');
+        const usersColl = usersDB.collection('peopleInfo');
+        // All Fetch Mathod here;
+        // post
+        app.post('/users',async (req, res) => {
+            const newData = req.body;
+            const result = await usersColl.insertOne(newData)
+            console.log(result);
+            res.send(result)
+        })
+
+
+
+
+
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
