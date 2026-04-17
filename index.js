@@ -13,9 +13,9 @@ app.get('/', (req, res) => {
     res.send('first-crud-operation-server here')
 })
 // users Api
-app.get('/users', (req, res) => {
-    res.send('first-crud-operation-Usrs here')
-})
+// app.get('/users', (req, res) => {
+    
+// })
 
 // create mongodb client
 const client = new MongoClient(uri, {
@@ -32,13 +32,20 @@ async function run() {
         // usersdb + usersColl code here;
         const usersDB = client.db('crudUsers');
         const usersColl = usersDB.collection('peopleInfo');
+        // Find mehod code here;
+        app.get('/users', async (req, res) => {
+            const cursor = usersColl.find();
+            const result = await cursor.toArray();
+            res.send(result);
+        })
         // All Fetch Mathod here;
         // post
-        app.post('/users',async (req, res) => {
+        app.post('/users', async (req, res) => {
             const newData = req.body;
             const result = await usersColl.insertOne(newData)
             console.log(result);
             res.send(result)
+
         })
 
 
