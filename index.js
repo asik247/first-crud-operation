@@ -38,6 +38,14 @@ async function run() {
             const result = await cursor.toArray();
             res.send(result);
         })
+        // get dynamic data using id;
+        app.get('/users/:id',async (req,res)=>{
+            const id = req.params.id;
+            console.log(id);
+            const query = {_id:new ObjectId(id)}
+            const result = await usersColl.findOne(query)
+            res.send(result)
+        })
         // All Fetch Mathod here;
         // post
         app.post('/users', async (req, res) => {
