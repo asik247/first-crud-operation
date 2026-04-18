@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 })
 // users Api
 // app.get('/users', (req, res) => {
-    
+
 // })
 
 // create mongodb client
@@ -39,10 +39,10 @@ async function run() {
             res.send(result);
         })
         // get dynamic data using id;
-        app.get('/users/:id',async (req,res)=>{
+        app.get('/users/:id', async (req, res) => {
             const id = req.params.id;
             console.log(id);
-            const query = {_id:new ObjectId(id)}
+            const query = { _id: new ObjectId(id) }
             const result = await usersColl.findOne(query)
             res.send(result)
         })
@@ -55,11 +55,27 @@ async function run() {
             res.send(result)
 
         })
-        // Delete Method;
-        app.delete('/users/:id',async(req,res)=>{
+        // update user using patch method;
+        app.patch('/users/:id', async (req, res) => {
             const id = req.params.id;
-            console.log('afer delete btn click',id);
-            const query = {_id:new ObjectId(id)}
+            console.log('serveer update', id);
+            const updatePeopleInfo = req.body;
+            console.log(updatePeopleInfo);
+            const query = { _id: new ObjectId(id) };
+            const update = {
+                $set: {
+                    name: updatePeopleInfo.name,
+                    email: updatePeopleInfo.email
+                }
+            }
+            const result = await usersColl.updateOne(query,update)
+            res.send(result)
+        })
+        // Delete Method;
+        app.delete('/users/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log('afer delete btn click', id);
+            const query = { _id: new ObjectId(id) }
             const result = await usersColl.deleteOne(query)
             res.send(result)
         })
